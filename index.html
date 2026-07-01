@@ -4,30 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proxima | Secure Gateway</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons for Copy and Security Badge -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --bg-main: #050508;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent-primary: #00f2ff; /* Cyan */
-            --accent-secondary: #7000ff; /* Purple */
-            --text: #e0e0e0;
+            --bg-main: #030307;
+            --card-bg: rgba(10, 10, 20, 0.7);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --accent-glow: rgba(0, 242, 255, 0.15);
+            --accent-primary: #00f2ff; 
+            --accent-secondary: #9d4edd; 
+            --text-main: #f8f9fa;
+            --text-muted: #8a8f98;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            background: radial-gradient(circle at top left, #1a1a2e, #050508);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            /* Cyberpunk Grid Background Effect */
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
-        /* Viewport sections to force scrolling */
+        /* Abstract Glow Orbs behind content */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+            z-index: -1;
+        }
+
         .section {
             min-height: 100vh;
             width: 100%;
@@ -35,106 +65,208 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box;
             padding: 40px 20px;
         }
 
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
-            max-width: 500px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 50px 40px;
+            max-width: 480px;
             width: 100%;
             text-align: center;
-            box-sizing: border-box;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        /* Premium Border Top Light Link */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .security-badge {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            color: var(--accent-primary);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
         }
 
         h1 {
+            font-size: 32px;
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-top: 0;
-            background: linear-gradient(to right, #fff, var(--accent-primary));
+            letter-spacing: -0.5px;
+            margin: 0 0 12px 0;
+            background: linear-gradient(135deg, #ffffff 30%, #a5f3fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .timer-box {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 48px;
-            color: var(--accent-primary);
-            margin: 30px 0;
-            text-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        h3 {
+            font-size: 24px;
+            margin: 0 0 12px 0;
         }
 
         .instruction-text {
-            color: #888;
-            font-size: 14px;
+            color: var(--text-muted);
+            font-size: 15px;
             line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Modern Circular/Bar Loader Container */
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 100px;
+            height: 6px;
+            margin: 25px 0;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            box-shadow: 0 0 15px var(--accent-primary);
+        }
+
+        .timer-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+            letter-spacing: -2px;
         }
 
         .scroll-indicator {
-            margin-top: 40px;
-            color: #555;
-            font-size: 12px;
+            margin-top: 35px;
+            color: var(--accent-primary);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
             animation: bounce 2s infinite;
         }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
         }
 
-        /* Bottom Section Buttons */
+        /* Buttons Styling */
         .btn {
-            padding: 16px 32px;
-            border-radius: 12px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
             border: none;
             font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: pointer;
-            transition: 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 14px;
-            text-decoration: none;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: #000;
-            opacity: 0.3;
-            pointer-events: none; /* Disables click until active */
+            background: linear-gradient(135deg, #101014, #181824);
+            color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            pointer-events: none;
         }
 
         .btn-primary.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #030307;
             opacity: 1;
             pointer-events: auto;
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 242, 255, 0.3);
         }
 
         .btn-primary.active:hover {
             transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.4);
         }
 
-        /* Password Display Style */
+        /* Premium Password Area */
+        .password-wrapper {
+            position: relative;
+            margin: 30px 0;
+        }
+
         .password-box {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 28px;
-            background: rgba(0,0,0,0.4);
-            border: 1px dashed var(--accent-primary);
-            padding: 15px;
-            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 20px;
+            padding-right: 60px;
+            border-radius: 16px;
             color: #fff;
-            margin: 25px 0;
             letter-spacing: 2px;
             word-break: break-all;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* Screen Visibility States */
+        .copy-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--accent-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-primary);
+            color: #000;
+        }
+
+        .toast-msg {
+            font-size: 12px;
+            color: #00ffaa;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+
         .hidden { display: none !important; }
     </style>
 
@@ -144,51 +276,73 @@
 </head>
 <body>
 
-    <!-- SCREEN 1: TIMER & SCROLL DOWN -->
-    <div id="screen-timer">
+    <!-- SCREEN 1: SECURE TIMER -->
+    <div id="screen-timer" style="width: 100%;">
         <div class="section">
             <div class="card">
-                <h1>PROXIMA SECURITY</h1>
-                <p class="instruction-text">Verifying secure connection. Please wait for the system to initialize.</p>
+                <div class="security-badge">
+                    <i class="fa-solid fa-shield-halved"></i> Security Protocol
+                </div>
+                <h1>PROXIMA CORE</h1>
+                <p class="instruction-text">Verifying handshake protocol and securely initializing system links.</p>
                 
-                <!-- 20 Second Timer -->
+                <!-- 20 Second Dynamic Timer -->
                 <div class="timer-box" id="countdown">20s</div>
                 
-                <p class="instruction-text" id="scroll-prompt">Timer khatam hone ka intezar karein...</p>
-                <div class="scroll-indicator" id="arrow" style="display:none;">▼ SCROLL DOWN TO CONTINUE ▼</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="p-bar"></div>
+                </div>
+                
+                <p class="instruction-text" id="scroll-prompt" style="color: var(--text-muted); font-size: 13px;">Timer chal raha hai, kripya thoda intezar karein...</p>
+                
+                <div class="scroll-indicator" id="arrow" style="display:none;">
+                    <span>SCROLL DOWN TO REVEAL KEY</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
             </div>
         </div>
 
         <!-- Lower Section containing the Continue Button -->
         <div class="section" id="bottom-section">
             <div class="card">
-                <h3>Verification Complete</h3>
-                <p class="instruction-text" style="margin-bottom: 30px;">Aapka access key ready hai. Niche diye gaye button par click karein.</p>
+                <div class="security-badge" id="status-badge" style="color: #ff3e3e; background: rgba(255,62,62,0.1); border-color: rgba(255,62,62,0.2)">
+                    <i class="fa-solid fa-clock"></i> Status: Waiting
+                </div>
+                <h3>Access Status</h3>
+                <p class="instruction-text" style="margin-bottom: 30px;">Aapki high-grade cryptographic security key ready ho chuki hai to proceed karein.</p>
                 
-                <!-- Action Button -->
-                <button class="btn btn-primary" id="continue-btn" onclick="showPasswordScreen()">Continue</button>
+                <button class="btn btn-primary" id="continue-btn" onclick="showPasswordScreen()">
+                    Continue to Gateway <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>
 
-
     <!-- SCREEN 2: PASSWORD SHOW PAGE -->
-    <div id="screen-password" class="hidden">
+    <div id="screen-password" class="hidden" style="width: 100%;">
         <div class="section">
             <div class="card">
-                <h1>GATEWAY KEY</h1>
-                <p class="instruction-text">Admin panel se live updated password niche dikh raha hai:</p>
+                <div class="security-badge" style="color: #00ffaa; background: rgba(0,255,170,0.1); border-color: rgba(0,255,170,0.2)">
+                    <i class="fa-solid fa-circle-check"></i> Connected
+                </div>
+                <h1>KEY DASHBOARD</h1>
+                <p class="instruction-text">Admin terminal se live dynamically synchronized password neeche hai:</p>
                 
-                <!-- Live Password Display -->
-                <div class="password-box" id="live-password">LOADING...</div>
-                
-                <p class="instruction-text">Is key ko copy karein aur access panel mein paste karein.</p>
+                <div class="password-wrapper">
+                    <div class="password-box" id="live-password">LOADING...</div>
+                    <button class="copy-btn" onclick="copyPassword()" title="Copy Password">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="toast-msg" id="toast">✔ Key successfully copied!</div>
+                <p class="instruction-text" style="font-size: 13px; margin-top: 20px;">Is authentication key ko copy karke access panel me authenticate karein.</p>
             </div>
         </div>
     </div>
 
 <script>
-    // Aapka same Firebase Config jo Admin Core panel mein hai
+    // Firebase Config (Same as your Admin Core panel)
     const firebaseConfig = {
       apiKey: "AIzaSyDlpxaspVF2mt88JF0_Zrp-ZCwllMG0ERA",
       authDomain: "proxima-1e8dc.firebaseapp.com",
@@ -202,11 +356,14 @@
     const passwordRef = database.ref("admin_settings/app_password");
 
     let timeLeft = 20;
+    const totalTime = 20;
     const countdownEl = document.getElementById("countdown");
+    const pBar = document.getElementById("p-bar");
     const continueBtn = document.getElementById("continue-btn");
     const scrollPrompt = document.getElementById("scroll-prompt");
     const arrow = document.getElementById("arrow");
     const livePasswordEl = document.getElementById("live-password");
+    const statusBadge = document.getElementById("status-badge");
 
     // 1. Live Password Fetching (Real-time Sync)
     passwordRef.on('value', (snapshot) => {
@@ -218,28 +375,58 @@
         }
     });
 
-    // 2. Timer Logic
+    // 2. Advanced Timer & Progress Bar Logic
     const timer = setInterval(() => {
         timeLeft--;
-        countdownEl.innerText = timeLeft + "s";
+        if(timeLeft >= 0) {
+            countdownEl.innerText = timeLeft + "s";
+            // Dynamic progress calculation
+            let progressWidth = ((totalTime - timeLeft) / totalTime) * 100;
+            pBar.style.width = progressWidth + "%";
+        }
 
         if(timeLeft <= 0) {
             clearInterval(timer);
             countdownEl.innerText = "READY";
-            scrollPrompt.innerText = "Kripya page ke sabse niche scroll karein!";
-            arrow.style.display = "block";
+            countdownEl.style.color = "#00ffaa";
+            countdownEl.style.textShadow = "0 0 30px rgba(0, 255, 170, 0.4)";
             
-            // Activate the continue button
+            scrollPrompt.innerText = "Neeche scroll karke Continue button par click karein!";
+            scrollPrompt.style.color = "#00ffaa";
+            arrow.style.display = "flex";
+            
+            // Update status badge to ready
+            statusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Status: Ready';
+            statusBadge.style.color = "#00ffaa";
+            statusBadge.style.background = "rgba(0,255,170,0.1)";
+            statusBadge.style.borderColor = "rgba(0,255,170,0.2)";
+
+            // Activate professional premium style button
             continueBtn.classList.add("active");
         }
     }, 1000);
 
-    // 3. Switch to Next Page Screen
+    // 3. Switch Screen
     function showPasswordScreen() {
         document.getElementById("screen-timer").classList.add("hidden");
         document.getElementById("screen-password").classList.remove("hidden");
-        // Window top par reset karne ke liye
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 4. One-Click Copy Functionality
+    function copyPassword() {
+        const passwordText = livePasswordEl.innerText;
+        if(passwordText && passwordText !== "LOADING..." && passwordText !== "NO KEY SET") {
+            navigator.clipboard.writeText(passwordText).then(() => {
+                const toast = document.getElementById("toast");
+                toast.style.display = "block";
+                setTimeout(() => {
+                    toast.style.display = "none";
+                }, 2500);
+            }).catch(err => {
+                console.error("Copy failed: ", err);
+            });
+        }
     }
 </script>
 
